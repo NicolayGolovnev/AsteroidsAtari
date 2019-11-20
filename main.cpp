@@ -10,6 +10,8 @@ int main()
     RenderWindow app(VideoMode(W, H), "Asteroids!");
     app.setFramerateLimit(60);
 
+	Event newEvent;
+
 	while (app.isOpen()) {
 
 	}
