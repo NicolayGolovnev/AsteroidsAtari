@@ -1,8 +1,20 @@
-#include <SFML/Graphics.hpp>
+#include "Entity.h"
+#include <time.h>
+#include "Asteroid.h"
+#include "Bullet.h"
+#include "Player.h"
+
 using namespace sf;
 
-const int W = 1200;
-const int H = 800;
+//const int W = 1200;
+//const int H = 800;
+
+bool isCollide(Entity* a, Entity* b)
+{
+	return (b->getX() - a->getX()) * (b->getX() - a->getX()) +
+		(b->getY() - a->getY()) * (b->getY() - a->getY()) <
+		(a->getR() + b->getR()) * (a->getR() + b->getR());
+}
 
 int main()
 {

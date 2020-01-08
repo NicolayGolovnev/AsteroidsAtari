@@ -4,6 +4,18 @@ Entity::Entity(){
 	life = 1;
 }
 
+float Entity::getX() {
+	return this->x;
+}
+
+float Entity::getY() {
+	return this->y;
+}
+
+float Entity::getR() {
+	return this->R;
+}
+
 void Entity::settings(Animation& a, int X, int Y, float Angle = 0, int radius = 1){
 	anim = a;
 	x = X; y = Y;
