@@ -4,11 +4,10 @@
 using namespace sf;
 class Animation
 {
-private:
-	float Frame, speed;
+public:
+	float Frame, Speed;
 	Sprite sprite;
 	std::vector<IntRect> frames;
-public:
 	Animation();
 	Animation(Texture& t, int x, int y, int w, int h, int count, float speed);
 	void update();

@@ -1,10 +1,10 @@
 #include "Animation.h"
 
 Animation::Animation() {}
-Animation::Animation(Texture& t, int x, int y, int w, int h, int count, float Speed)
+Animation::Animation(Texture& t, int x, int y, int w, int h, int count, float speed)
 {
 	Frame = 0;
-	speed = Speed;
+	Speed = speed;
 
 	for (int i = 0; i < count; i++)
 		frames.push_back(IntRect(x + i * w, y, w, h));
@@ -17,7 +17,7 @@ Animation::Animation(Texture& t, int x, int y, int w, int h, int count, float Sp
 
 void Animation::update()
 {
-	Frame += speed;
+	Frame += Speed;
 	int n = frames.size();
 	if (Frame >= n) Frame -= n;
 	if (n > 0) sprite.setTextureRect(frames[int(Frame)]);
@@ -25,5 +25,5 @@ void Animation::update()
 
 bool Animation::isEnd()
 {
-	return Frame + speed >= frames.size();
+	return Frame + Speed >= frames.size();
 }
