@@ -17,13 +17,13 @@ void Player::update()
 {
 	if (thrust)
 	{
-		dx += cos(angle * DEGTORAD) * 0.2;
-		dy += sin(angle * DEGTORAD) * 0.2;
+		dx += cos(angle * DEGtoRAD) * 0.15;
+		dy += sin(angle * DEGtoRAD) * 0.15;
 	}
 	else
 	{
-		dx *= 0.99;
-		dy *= 0.99;
+		dx *= 0.97;
+		dy *= 0.97;
 	}
 
 	int maxSpeed = 15;

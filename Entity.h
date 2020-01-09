@@ -6,7 +6,7 @@
 const int W = 1200;
 const int H = 800;
 
-float DEGTORAD = 0.017453f;
+const float DEGtoRAD = 0.017453f;
 
 class Entity
 {
@@ -32,7 +32,8 @@ public:
 	void setName(std::string n);
 	void setAnim(Animation a);
 	bool animIsEnd();
-	void settings(Animation& a, int X, int Y, float Angle = 0, int radius = 1);
+	void settings(Animation& a, int X, int Y, float Angle, int radius);
+	void settings(Animation& a, int X, int Y);
 	virtual void update();
 	void draw(RenderWindow& app);
 	virtual ~Entity();

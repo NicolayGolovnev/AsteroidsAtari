@@ -7,8 +7,8 @@ Bullet::Bullet()
 
 void  Bullet::update()
 {
-    dx=cos(angle*DEGTORAD)*6;
-    dy=sin(angle*DEGTORAD)*6;
+    dx=cos(angle*DEGtoRAD)*6;
+    dy=sin(angle*DEGtoRAD)*6;
     // angle+=rand()%7-3;  /*try this*/
     x+=dx;
     y+=dy;

@@ -63,11 +63,18 @@ bool Entity::animIsEnd() {
 	return this->anim.isEnd();
 }
 
-void Entity::settings(Animation& a, int X, int Y, float Angle = 0, int radius = 1){
+void Entity::settings(Animation& a, int X, int Y, float Angle, int radius){
 	anim = a;
 	x = X; y = Y;
 	angle = Angle;
 	R = radius;
+}
+
+void Entity::settings(Animation& a, int X, int Y) {
+	anim = a;
+	x = X; y = Y;
+	angle = 0;
+	R = 1;
 }
 
 void Entity::update() {
