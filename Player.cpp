@@ -1,9 +1,9 @@
 #include "Player.h"
 
-Player::Player()
-	{
-		name = "player";
-	}
+Player::Player() {
+	name = "player";
+	score = 0;
+}
 
 bool Player::getThrust() {
 	return this->thrust;
@@ -11,6 +11,14 @@ bool Player::getThrust() {
 
 void Player::setThrust(bool t) {
 	this->thrust = t;
+}
+
+int Player::getScore() {
+	return this->score;
+}
+
+void Player::setScore(int s){
+	this->score = s;
 }
 
 void Player::update()

@@ -1,3 +1,4 @@
+#include <SFML/System.hpp>
 #include "Entity.h"
 #include <time.h>
 #include "Asteroid.h"
@@ -44,6 +45,12 @@ int main()
 	Animation sPlayer(tSpaceShip, 0, 0, 31, 31, 1, 0);
 	Animation sExplosion_ship(tExplosion2, 0, 0, 192, 192, 64, 0.5);
 
+	Font font;
+	font.loadFromFile("fonts/cour.ttf");
+	Text text("POINTS: 0", font, 32);
+	//text.setColor(Color::White);
+	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	text.setPosition(10, 10);
 
 	std::list<Entity*> entities;
 
@@ -96,6 +103,7 @@ int main()
 						e->setName("explosion");
 						entities.push_back(e);
 
+						p->setScore(p->getScore() + rand() % 50);
 
 						for (int i = 0; i < 2; i++)
 						{
@@ -151,6 +159,7 @@ int main()
 		//drawed picture
 		app.draw(background);
 		for (auto i : entities) i->draw(app);
+		app.draw(text);
 		app.display();
 	}
 
