@@ -103,7 +103,11 @@ int main()
 						e->setName("explosion");
 						entities.push_back(e);
 
-						p->setScore(p->getScore() + rand() % 50);
+						if (a->getR() == 15) {
+							//little rock
+							p->setScore(p->getScore() + 50 + rand() % 25);
+							text.setString("POINTS: " + std::to_string(p->getScore()));
+						}
 
 						for (int i = 0; i < 2; i++)
 						{
