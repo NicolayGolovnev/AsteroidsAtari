@@ -8,6 +8,7 @@ private:
 public:
 	Player();
 	bool getThrust();
+	void setThrust(bool t);
 	void update();
 
 };

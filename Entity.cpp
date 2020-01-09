@@ -16,6 +16,13 @@ float Entity::getR() {
 	return this->R;
 }
 
+float Entity::getAngle() {
+	return this->angle;
+}
+void Entity::setAngle(float a) {
+	this->angle = a;
+}
+
 float Entity::getDx() {
 	return this->dx;
 }
@@ -36,7 +43,7 @@ bool Entity::getLife() {
 	return this->life;
 }
 
-bool Entity::setLife(bool l) {
+void Entity::setLife(bool l) {
 	this->life = l;
 }
 
@@ -46,6 +53,14 @@ std::string Entity::getName() {
 
 void Entity::setName(std::string n) {
 	this->name = n;
+}
+
+void Entity::setAnim(Animation a) {
+	this->anim = a;
+}
+
+bool Entity::animIsEnd() {
+	return this->anim.isEnd();
 }
 
 void Entity::settings(Animation& a, int X, int Y, float Angle = 0, int radius = 1){

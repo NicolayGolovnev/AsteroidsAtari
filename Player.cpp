@@ -9,6 +9,10 @@ bool Player::getThrust() {
 	return this->thrust;
 }
 
+void Player::setThrust(bool t) {
+	this->thrust = t;
+}
+
 void Player::update()
 {
 	if (thrust)
