@@ -16,6 +16,38 @@ float Entity::getR() {
 	return this->R;
 }
 
+float Entity::getDx() {
+	return this->dx;
+}
+
+void Entity::setDx(float a) {
+	this->dx = a;
+}
+
+float Entity::getDy() {
+	return this->dy;
+}
+
+void Entity::setDy(float b) {
+	this->dy = b;
+}
+
+bool Entity::getLife() {
+	return this->life;
+}
+
+bool Entity::setLife(bool l) {
+	this->life = l;
+}
+
+std::string Entity::getName() {
+	return this->name;
+}
+
+void Entity::setName(std::string n) {
+	this->name = n;
+}
+
 void Entity::settings(Animation& a, int X, int Y, float Angle = 0, int radius = 1){
 	anim = a;
 	x = X; y = Y;
@@ -23,7 +55,9 @@ void Entity::settings(Animation& a, int X, int Y, float Angle = 0, int radius = 
 	R = radius;
 }
 
-void Entity::update() {};
+void Entity::update() {
+	this->anim.update();
+};
 
 void Entity::draw(RenderWindow& app){
 	anim.sprite.setPosition(x, y);

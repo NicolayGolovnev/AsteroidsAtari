@@ -20,6 +20,17 @@ public:
 	float getX();
 	float getY();
 	float getR();
+	bool getLife();
+	bool setLife(bool l);
+
+	float getDx();
+	void setDx(float a);
+	float getDy();
+	void setDy(float b);
+
+	std::string getName();
+	void setName(std::string n);
+
 	void settings(Animation& a, int X, int Y, float Angle = 0, int radius = 1);
 	virtual void update();
 	void draw(RenderWindow& app);
