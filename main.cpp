@@ -7,8 +7,20 @@
 
 using namespace sf;
 
+/*
+ADDED-LIST:
+DONE	- LIFES
+	- PICTURE LIFE AND Outing that
+	- RECORDs TABLE
+DONE	- INVULNERABILITY ON START BEFORE MOVING
+	- PLAY TIME
+*/
+
 //const int W = 1200;
 //const int H = 800;
+
+int lifes = 3;
+bool invulabe = false;
 
 bool isCollide(Entity* a, Entity* b)
 {
@@ -24,12 +36,13 @@ int main()
 	RenderWindow app(VideoMode(W, H), "Asteroids!");
 	app.setFramerateLimit(45);
 
-	Texture tSpaceShip, tBackground, tExplosion, tAsteroid, tFireBullet, tLittleAsteroid, tExplosion2;
+	Texture tSpaceShip, tBackground, tExplosion, tAsteroid, tFireBulletBlue, tFireBulletRed, tLittleAsteroid, tExplosion2;
 	tSpaceShip.loadFromFile("images/White_Ship_Space.png");
 	tBackground.loadFromFile("images/back1.jpg");
 	tExplosion.loadFromFile("images/explosions/type_C.png");
 	tAsteroid.loadFromFile("images/rock.png");
-	tFireBullet.loadFromFile("images/fire_blue.png");
+	tFireBulletBlue.loadFromFile("images/fire_blue.png");
+	tFireBulletRed.loadFromFile("images/fire_red.png");
 	tLittleAsteroid.loadFromFile("images/rock_small.png");
 	tExplosion2.loadFromFile("images/explosions/type_B.png");
 
@@ -41,16 +54,21 @@ int main()
 	Animation sExplosion(tExplosion, 0, 0, 256, 256, 48, 0.5);
 	Animation sRock(tAsteroid, 0, 0, 64, 64, 16, 0.2);
 	Animation sRock_small(tLittleAsteroid, 0, 0, 64, 64, 16, 0.2);
-	Animation sBullet(tFireBullet, 0, 0, 32, 64, 16, 0.8);
+	Animation sBullet(tFireBulletBlue, 0, 0, 32, 64, 16, 0.8);
 	Animation sPlayer(tSpaceShip, 0, 0, 31, 31, 1, 0);
 	Animation sExplosion_ship(tExplosion2, 0, 0, 192, 192, 64, 0.5);
 
 	Font font;
 	font.loadFromFile("fonts/cour.ttf");
-	Text text("POINTS: 0", font, 32);
+
+	Text point("POINTS: 0", font, 32);
 	//text.setColor(Color::White);
-	text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-	text.setPosition(10, 10);
+	point.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	point.setPosition(10, 10);
+
+	Text life("LIFES: 3", font, 32);
+	life.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	life.setPosition(W - 175, 10);
 
 	std::list<Entity*> entities;
 
@@ -65,7 +83,7 @@ int main()
 	p->settings(sPlayer, W / 2, H / 2, 270, 20);
 	entities.push_back(p);
 
-	//MAIN
+											//MAIN//
 	while (app.isOpen())
 	{
 		Event event;
@@ -76,11 +94,18 @@ int main()
 
 			if (event.type == Event::KeyPressed)
 				if (event.key.code == Keyboard::Space)
-				{
-					Bullet* b = new Bullet();
-					b->settings(sBullet, p->getX(), p->getY(), p->getAngle(), 10);
-					entities.push_back(b);
-				}
+					//if (event.key.code != Keyboard::Up && event.key.code != Keyboard::Left && event.key.code != Keyboard::Right) 
+						{
+							Bullet* b = new Bullet();
+							b->settings(sBullet, p->getX(), p->getY(), p->getAngle(), 10);
+							entities.push_back(b);
+						}
+		}
+
+		if (invulabe) {
+			if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::Left) ||
+				Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Space))
+				invulabe = false;
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Right)) p->setAngle(p->getAngle() + 3);
@@ -91,7 +116,7 @@ int main()
 		for (auto a : entities)
 			for (auto b : entities)
 			{
-				//KILLED ASTEROID
+												//KILLED ASTEROID//
 				if (a->getName() == "asteroid" && b->getName() == "bullet")
 					if (isCollide(a, b))
 					{
@@ -106,7 +131,7 @@ int main()
 						if (a->getR() == 15) {
 							//little rock
 							p->setScore(p->getScore() + 50 + rand() % 25);
-							text.setString("POINTS: " + std::to_string(p->getScore()));
+							point.setString("POINTS: " + std::to_string(p->getScore()));
 						}
 
 						for (int i = 0; i < 2; i++)
@@ -119,12 +144,23 @@ int main()
 
 					}
 
-				//DEAD SHIP
+											//DEAD SHIP//
 				if (a->getName() == "player" && b->getName() == "asteroid")
-					if (isCollide(a, b))
+					if (!invulabe)
+						if (isCollide(a, b))
 					{
 						b->setLife(false);
 						//playerLife--
+						lifes--;
+						life.setString("LIFE: " + std::to_string(lifes));
+						invulabe = true;
+
+						if (lifes == 0) {
+							//вывод черного фона и таблицы
+
+							//вывести таблицу рекордов, сделать запись
+							app.close();
+						}
 
 						Entity* e = new Entity();
 						e->settings(sExplosion_ship, a->getX(), a->getY());
@@ -160,10 +196,11 @@ int main()
 			else i++;
 		}
 
-		//drawed picture
+										//drawed picture//
 		app.draw(background);
 		for (auto i : entities) i->draw(app);
-		app.draw(text);
+		app.draw(point);
+		app.draw(life);
 		app.display();
 	}
 
