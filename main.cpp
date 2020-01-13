@@ -63,10 +63,10 @@ int main()
 	Texture tExplosionRock, tExplosionRockSmall, tExplosionShip;
 	tExplosionRock.loadFromFile("images/explosions/explosionRock.png");
 	tExplosionRockSmall.loadFromFile("images/explosions/explosionRockSmall.png");
-	tExplosionShip.loadFromFile("images/explosions/type_C.png");
+	tExplosionShip.loadFromFile("images/explosions/explosionShip.png");
 	Animation sExplosionRock(tExplosionRock, 0, 0, 128, 128, 8, 6, 0.4);
 	Animation sExplosionRockSmall(tExplosionRockSmall, 0, 0, 64, 64, 8, 6, 0.4);
-	Animation sExplosionShip(tExplosionShip, 0, 0, 256, 256, 48, 1, 0.4);
+	Animation sExplosionShip(tExplosionRock, 0, 0, 128, 128, 8, 6, 0.6);
 
 	Font font;
 	font.loadFromFile("fonts/cour.ttf");
@@ -171,23 +171,6 @@ int main()
 						gamePause = false;
 					else
 						gamePause = true;
-					
-					//затемнение всех спрайтов, которые когда либо существуют
-
-					//backgroundPause.setColor(Color(255, 255, 255, 170));
-					//app.draw(backgroundPause);
-					////FAQ and By Author
-					//app.draw(FAQ1);
-					//app.draw(FAQ2);
-					//app.draw(FAQ3);
-					//app.draw(FAQ4);
-					//app.draw(FAQ5);
-					//app.display();
-
-
-					/*while (pause)
-						if (Keyboard::isKeyPressed(Keyboard::Q))
-							pause = false;*/
 				}
 //--------------------------------------------//CREATE BULLET//-----------------------------------//
 				if (event.key.code == Keyboard::Space){
@@ -199,12 +182,9 @@ int main()
 							counterBullets++;
 						}
 				}
-
-				/*if (event.type == Event::KeyReleased) {
-					if (event.key.code == Keyboard::Escape)
-						enableOnce = true;
-				}*/
-
+//-------------------------------------------//GAMEMODES-GOD//------------------------------------//
+				if (event.key.code == Keyboard::BackSpace)
+					lifes++;
 				
 			}
 		}
@@ -264,7 +244,6 @@ int main()
 						if (isCollide(a, b)) {
 							b->setLife(false);
 							lifes--;
-							life.setString("LIFE: " + std::to_string(lifes));
 							invulabe = true;
 
 //---------------------------------------------------//GAME OVER//-------------------------------------------//
@@ -338,6 +317,7 @@ int main()
 		for (auto i : entities) i->draw(app);
 
 		app.draw(point);
+		life.setString("LIFE: " + std::to_string(lifes));
 		app.draw(life);
 		app.draw(time);
 		app.draw(pause);
