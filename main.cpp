@@ -38,7 +38,7 @@ int main()
 {
 	srand(time(0));
 	Clock clock, clockPause;
-	bool enableOnce = true;
+	bool gamePause = false;
 
 	RenderWindow app(VideoMode(W, H), "Asteroids!");
 	app.setFramerateLimit(45);
@@ -85,19 +85,23 @@ int main()
 	//Строки-PAUSE_MENU
 	Text FAQ1("How to play:", font, 32);
 	FAQ1.setStyle(Text::Bold | Text::Underlined);
-	FAQ1.setPosition(24, 100);
-	Text FAQ2("→ - Turn the spaceship to the right", font, 32);
+	FAQ1.setPosition(24, 150);
+	Text FAQ2("-> (Arrow Right) - Turn the spaceship to the right", font, 32);
 	FAQ2.setStyle(Text::Bold);
-	FAQ2.setPosition(32, 140);
-	Text FAQ3("← - Turn the spaceship to the left", font, 32);
+	FAQ2.setPosition(45, 210);
+	Text FAQ3("<- (Arrow Left) - Turn the spaceship to the left", font, 32);
 	FAQ3.setStyle(Text::Bold);
-	FAQ3.setPosition(32, 180);
-	Text FAQ4("↑ - Spaceship acceleration", font, 32);
+	FAQ3.setPosition(45, 250);
+	Text FAQ4("Arrow Up - Spaceship acceleration", font, 32);
 	FAQ4.setStyle(Text::Bold);
-	FAQ4.setPosition(32, 220);
+	FAQ4.setPosition(45, 290);
 	Text FAQ5("Space - Fire", font, 32);
 	FAQ5.setStyle(Text::Bold);
-	FAQ5.setPosition(32, 260);
+	FAQ5.setPosition(45, 340);
+
+	Text byAuthor("Author: Golovnev Nicolay, ASTU PI-82", font, 48);
+	byAuthor.setStyle(Text::Bold);
+	byAuthor.setPosition(16, H - 82);
 
 	//Строки-информация для игры
 	Text point("POINTS: 0", font, 32);
@@ -130,83 +134,92 @@ int main()
 	int gameTime = 0;
 
 	//ESC - PAUSE - по центру слабо видным цветом белым
-	Text pause("ESC - PAUSE", font, 16);
-	pause.setPosition(W / 2 - 120, H - 18);
+	Text pause("ESC - PAUSE", font, 24);
+	pause.setPosition(W / 2 - 120, H - 26);
 //----------------------------------------//MAIN//------------------------------------------------//
 	while (app.isOpen())
 	{
 		
-		float timeС = clock.getElapsedTime().asMicroseconds();
-		clock.restart();
-		timeС /= 800;
+		if (!gamePause) {
+			float timeС = clock.getElapsedTime().asMicroseconds();
+			clock.restart();
+			timeС /= 800;
+			counterTime += timeС;
+			if (counterTime > 1000) {
+				timeCreateAsteroids++;
+				gameTime++;
+				time.setString("TIME: " + std::to_string(gameTime));
+				//enableOnce = true;
+				counterTime = 0;
+			}
+		}
 		//std::cout << timeС << std::endl;
 		
 		Event event;
-		while (app.pollEvent(event))
-		{
+		while (app.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				app.close();
 //---------------------------------------------//PAUSE//------------------------------------------//
 			if (event.type == Event::KeyPressed) {
 				if (event.key.code == Keyboard::Escape) {
 					//TAKE A PAUSE
-					bool pause = true;
 					invulabe = true;
-					enableOnce = false;
-
+					if (gamePause)
+						gamePause = false;
+					else
+						gamePause = true;
+					
 					//затемнение всех спрайтов, которые когда либо существуют
-					backgroundPause.setColor(Color(255, 255, 255, 170));
-					app.draw(backgroundPause);
-					//FAQ and By Author
-					app.draw(FAQ1);
-					app.draw(FAQ2);
-					app.draw(FAQ3);
-					app.draw(FAQ4);
-					app.draw(FAQ5);
-					app.display();
-					while (pause)
+
+					//backgroundPause.setColor(Color(255, 255, 255, 170));
+					//app.draw(backgroundPause);
+					////FAQ and By Author
+					//app.draw(FAQ1);
+					//app.draw(FAQ2);
+					//app.draw(FAQ3);
+					//app.draw(FAQ4);
+					//app.draw(FAQ5);
+					//app.display();
+
+
+					/*while (pause)
 						if (Keyboard::isKeyPressed(Keyboard::Q))
-							pause = false;
+							pause = false;*/
 				}
 //--------------------------------------------//CREATE BULLET//-----------------------------------//
 				if (event.key.code == Keyboard::Space){
-					enableOnce = true;
-					if (counterBullets < MAX_BULLETS) {
-						Bullet* b = new Bullet();
-						b->settings(sBullet, p->getX(), p->getY(), p->getAngle(), 10);
-						entities.push_back(b);
-						counterBullets++;
-					}
+					if (!gamePause)
+						if (counterBullets < MAX_BULLETS) {
+							Bullet* b = new Bullet();
+							b->settings(sBullet, p->getX(), p->getY(), p->getAngle(), 10);
+							entities.push_back(b);
+							counterBullets++;
+						}
 				}
 
-				if (event.type == Event::KeyReleased) {
+				/*if (event.type == Event::KeyReleased) {
 					if (event.key.code == Keyboard::Escape)
 						enableOnce = true;
-				}
+				}*/
 
 				
 			}
 		}
-
-		counterTime += timeС;
-		if (counterTime > 1000) {
-			timeCreateAsteroids++;
-			gameTime++;
-			time.setString("TIME: " + std::to_string(gameTime));
-			//enableOnce = true;
-			counterTime = 0;
-		}
+		
 //---------------------------------------------//INVULABE, KEYS//----------------------------------------//
-		if (invulabe) {
-			if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::Left) ||
-				Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Space))
-				invulabe = false;
-		}
+		
 
-		if (Keyboard::isKeyPressed(Keyboard::Right)) p->setAngle(p->getAngle() + 3);
-		if (Keyboard::isKeyPressed(Keyboard::Left))  p->setAngle(p->getAngle() - 3);
-		if (Keyboard::isKeyPressed(Keyboard::Up)) p->setThrust(true);
-		else p->setThrust(false);
+		if (!gamePause) {
+			if (invulabe) {
+				if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::Left) ||
+					Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Space))
+					invulabe = false;
+			}
+			if (Keyboard::isKeyPressed(Keyboard::Right)) p->setAngle(p->getAngle() + 3);
+			if (Keyboard::isKeyPressed(Keyboard::Left))  p->setAngle(p->getAngle() - 3);
+			if (Keyboard::isKeyPressed(Keyboard::Up)) p->setThrust(true);
+			else p->setThrust(false);
+		}
 
 		for (auto a : entities)
 			for (auto b : entities)
@@ -314,12 +327,26 @@ int main()
 
 //-------------------------------------//ОТРИСОВКА КАРТИНКИ//-----------------------------------------//
 		app.draw(background);
+
 		p->setAnim(sPlayer);
 		for (auto i : entities) i->draw(app);
+
 		app.draw(point);
 		app.draw(life);
 		app.draw(time);
 		app.draw(pause);
+
+		if (gamePause) {
+			backgroundPause.setColor(Color(255, 255, 255, 170));
+			app.draw(backgroundPause);
+			//FAQ and By Author
+			app.draw(FAQ1);
+			app.draw(FAQ2);
+			app.draw(FAQ3);
+			app.draw(FAQ4);
+			app.draw(FAQ5);
+			app.draw(byAuthor);
+		}
 		app.display();
 	}
 
