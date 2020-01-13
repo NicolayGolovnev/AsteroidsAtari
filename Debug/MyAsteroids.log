@@ -1,7 +1,4 @@
-﻿  Animation.cpp
-C:\Users\kolya\Documents\Projects\MyAsteroids\Animation.cpp(13,28): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-  Asteroid.cpp
-C:\Users\kolya\Documents\Projects\MyAsteroids\Animation.cpp(13,21): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+﻿  Asteroid.cpp
 C:\Users\kolya\Documents\Projects\MyAsteroids\Asteroid.cpp(5,18): warning C4244: =: преобразование "int" в "float", возможна потеря данных
   Bullet.cpp
   Entity.cpp
@@ -10,33 +7,31 @@ C:\Users\kolya\Documents\Projects\MyAsteroids\Entity.cpp(68,6): warning C4244: =
 C:\Users\kolya\Documents\Projects\MyAsteroids\Entity.cpp(68,13): warning C4244: =: преобразование "int" в "float", возможна потеря данных
 C:\Users\kolya\Documents\Projects\MyAsteroids\Entity.cpp(70,6): warning C4244: =: преобразование "int" в "float", возможна потеря данных
 C:\Users\kolya\Documents\Projects\MyAsteroids\Entity.cpp(75,6): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-  main.cpp
-C:\Users\kolya\Documents\Projects\MyAsteroids\Entity.cpp(75,13): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(21,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(41,51): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(42,63): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(43,55): warning C4305: аргумент: усечение из "double" в "float"
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(54,53): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(75,45): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(75,34): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(96,49): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(96,38): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(105,62): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(105,51): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(105,40): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(117,54): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(117,43): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
   Player.cpp
-C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(138,45): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(20,36): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(21,36): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(25,13): warning C4305: *=: усечение из "double" в "float"
+C:\Users\kolya\Documents\Projects\MyAsteroids\Entity.cpp(75,13): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(28,37): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(29,37): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(33,13): warning C4305: *=: усечение из "double" в "float"
+  main.cpp
+C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(34,13): warning C4305: *=: усечение из "double" в "float"
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(39,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(62,51): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(63,63): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(64,59): warning C4305: аргумент: усечение из "double" в "float"
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(104,53): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(122,16): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(157,46): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(157,35): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(172,24): warning C4244: +=: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(204,49): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(204,38): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(218,62): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(218,51): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(218,40): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(256,55): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(256,44): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
   Создание кода...
-C:\Users\kolya\Documents\Projects\MyAsteroids\Player.cpp(26,13): warning C4305: *=: усечение из "double" в "float"
-Bullet.obj : error LNK2005: "float DEGtoRAD" (?DEGtoRAD@@3MA) уже определен в Asteroid.obj
-Entity.obj : error LNK2005: "float DEGtoRAD" (?DEGtoRAD@@3MA) уже определен в Asteroid.obj
-main.obj : error LNK2005: "float DEGtoRAD" (?DEGtoRAD@@3MA) уже определен в Asteroid.obj
-Player.obj : error LNK2005: "float DEGtoRAD" (?DEGtoRAD@@3MA) уже определен в Asteroid.obj
+C:\Users\kolya\Documents\Projects\MyAsteroids\main.cpp(274,46): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
 Entity.obj : error LNK2001: неразрешенный внешний символ ""public: static class sf::RenderStates const sf::RenderStates::Default" (?Default@RenderStates@sf@@2V12@B)"
 main.obj : error LNK2001: неразрешенный внешний символ ""public: static class sf::RenderStates const sf::RenderStates::Default" (?Default@RenderStates@sf@@2V12@B)"
 C:\Users\kolya\Documents\Projects\MyAsteroids\Debug\MyAsteroids.exe : fatal error LNK1120: неразрешенных внешних элементов: 1

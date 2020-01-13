@@ -26,34 +26,7 @@ DONE	- INVULNERABILITY ON START BEFORE MOVING
 
 int lifes = 3;
 bool invulabe = true;
-/*
-void pauseGame(RenderWindow& window) {
-	//для паузы
-	Texture tbackgroundPause;
-	tbackgroundPause.loadFromFile("images/blackBackground.jpg");
-	Sprite backgroundPause(tbackgroundPause);
 
-	//TAKE A PAUSE
-	bool pause = true;
-	invulabe = true;
-
-	//затемнение всех спрайтов, которые когда либо существуют
-	backgroundPause.setColor(Color(255, 255, 255, 170));
-	//FAQ and By Author
-												//PAUSE//
-	while (pause) {
-		//создание стрингов и отобразить на экран
-		if (Keyboard::isKeyPressed(Keyboard::Q))
-			if (enableOnce) {
-				pause = false;
-				enableOnce = false;
-			}
-
-		window.draw(backgroundPause);
-		window.display();
-	}
-}
-*/
 bool isCollide(Entity* a, Entity* b)
 {
 	return (b->getX() - a->getX()) * (b->getX() - a->getX()) +
@@ -64,7 +37,7 @@ bool isCollide(Entity* a, Entity* b)
 int main()
 {
 	srand(time(0));
-	Clock clock;
+	Clock clock, clockPause;
 	bool enableOnce = true;
 
 	RenderWindow app(VideoMode(W, H), "Asteroids!");
@@ -89,19 +62,28 @@ int main()
 	Animation sRock(tAsteroid, 0, 0, 64, 64, 16, 0.2);
 	Animation sRock_small(tLittleAsteroid, 0, 0, 64, 64, 16, 0.2);
 	Animation sBullet(tFireBulletBlue, 0, 0, 32, 64, 16, 0.8);
-	Animation sPlayer(tSpaceShip, 0, 0, 31, 31, 1, 0);
+	Animation sPlayer(tSpaceShip, 0, 0, 64, 64, 1, 0);
 	Animation sExplosion_ship(tExplosion2, 0, 0, 192, 192, 64, 0.5);
-
-	//для паузы
-	Texture tbackgroundPause;
-	tbackgroundPause.loadFromFile("images/blackBackground.jpg");
-	Sprite backgroundPause(tbackgroundPause);
 
 	Font font;
 	font.loadFromFile("fonts/cour.ttf");
 
+	//Фон для паузы и для конца игры
+	Texture tbackgroundPause;
+	tbackgroundPause.loadFromFile("images/blackBackground.jpg");
+	Sprite backgroundPause(tbackgroundPause);
+
+	//Строки при проигрыше
+	Text gameOver("GAME OVER", font, 64);
+	gameOver.setStyle(Text::Bold);
+	gameOver.setPosition(W / 2 - 150, 200);
+
+	Text pressForExit("PRESS Y FOR EXIT", font, 32);
+	pressForExit.setStyle(Text::Bold);
+	pressForExit.setPosition(W / 2 - 135, 350);
+
+	//Строки-информация для игры
 	Text point("POINTS: 0", font, 32);
-	//text.setColor(Color::White);
 	point.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	point.setPosition(10, 10);
 
@@ -114,7 +96,7 @@ int main()
 	life.setPosition(W - 175, 10);
 
 	std::list<Entity*> entities;
-									//CREATE A ASTEROID WITH THE PLAYER
+//-------------------------------//CREATE A ASTEROID WITH THE PLAYER//------------------------------------------//
 	int countAsteroids = 0;
 	for (int i = 0; i < MAX_ASTEROIDS; i++)
 	{
@@ -129,22 +111,47 @@ int main()
 	entities.push_back(p);
 	int counterTime = 0, timeCreateAsteroids = 0, counterBullets = 0;
 	int gameTime = 0;
+
+	//ESC - PAUSE - по центру слабо видным цветом белым
+	Text pause("ESC - PAUSE", font, 16);
+	pause.setPosition(W / 2 - 120, H - 18);
 //----------------------------------------//MAIN//------------------------------------------------//
 	while (app.isOpen())
 	{
+		
 		float timeС = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
 		timeС /= 800;
 		//std::cout << timeС << std::endl;
-
+		
 		Event event;
 		while (app.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
 				app.close();
-//--------------------------------------------//CREATE BULLET//-----------------------------------//
+//---------------------------------------------//PAUSE//------------------------------------------//
 			if (event.type == Event::KeyPressed) {
+				if (event.key.code == Keyboard::Escape) {
+					//TAKE A PAUSE
+					bool pause = true;
+					invulabe = true;
+					enableOnce = false;
+					clockPause.restart();
+
+					//затемнение всех спрайтов, которые когда либо существуют
+					backgroundPause.setColor(Color(255, 255, 255, 170));
+					app.draw(backgroundPause);
+					//FAQ and By Author
+
+					app.display();
+					int count = 0, countM = 0;
+					while (pause)
+						if (Keyboard::isKeyPressed(Keyboard::Q))
+							pause = false;
+				}
+//--------------------------------------------//CREATE BULLET//-----------------------------------//
 				if (event.key.code == Keyboard::Space){
+					enableOnce = true;
 					if (counterBullets < MAX_BULLETS) {
 						Bullet* b = new Bullet();
 						b->settings(sBullet, p->getX(), p->getY(), p->getAngle(), 10);
@@ -153,7 +160,11 @@ int main()
 					}
 				}
 
-//---------------------------------------------//PAUSE//------------------------------------------//
+				if (event.type == Event::KeyReleased) {
+					if (event.key.code == Keyboard::Escape)
+						enableOnce = true;
+				}
+
 				
 			}
 		}
@@ -163,7 +174,7 @@ int main()
 			timeCreateAsteroids++;
 			gameTime++;
 			time.setString("TIME: " + std::to_string(gameTime));
-			enableOnce = true;
+			//enableOnce = true;
 			counterTime = 0;
 		}
 //---------------------------------------------//INVULABE, KEYS//----------------------------------------//
@@ -171,29 +182,6 @@ int main()
 			if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::Left) ||
 				Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Space))
 				invulabe = false;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-			if (enableOnce) {
-				Texture tbackgroundPause;
-				tbackgroundPause.loadFromFile("images/blackBackground.jpg");
-				Sprite backgroundPause(tbackgroundPause);
-
-				//TAKE A PAUSE
-				bool pause = true;
-				invulabe = true;
-
-				//затемнение всех спрайтов, которые когда либо существуют
-				backgroundPause.setColor(Color(255, 255, 255, 170));
-				//FAQ and By Author
-
-				app.draw(backgroundPause);
-				app.display();
-				while (pause)
-					if (Keyboard::isKeyPressed(Keyboard::Escape))
-						pause = false;
-				enableOnce = false;
-			}
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Right)) p->setAngle(p->getAngle() + 3);
@@ -230,10 +218,9 @@ int main()
 							e->settings(sRock_small, a->getX(), a->getY(), rand() % 360, 15);
 							entities.push_back(e);
 						}
-
 					}
 
-//--------------------------------------------------//DEAD SHIP//------------------------------------------//
+//--------------------------------------------//DEAD SHIP, GAME OVER//------------------------------------------//
 				if (a->getName() == "player" && b->getName() == "asteroid")
 					if (!invulabe)
 						if (isCollide(a, b)) {
@@ -242,12 +229,28 @@ int main()
 							life.setString("LIFE: " + std::to_string(lifes));
 							invulabe = true;
 
-													//GAME OVER//
+//---------------------------------------------------//GAME OVER//-------------------------------------------//
 							if (lifes == 0) {
 								//вывод черного фона и таблицы
+								backgroundPause.setColor(Color(255, 255, 255, 210));
+								life.setString("LIFE: 0");
+								app.draw(backgroundPause);
+								app.draw(life);
+								app.draw(point);
+								app.draw(time);
 
-								//вывести таблицу рекордов, сделать запись
-								app.close();
+								app.draw(gameOver);
+								app.draw(pressForExit);
+								app.display();
+
+								while (app.isOpen()) {
+									while (app.pollEvent(event))
+										if (event.type == Event::Closed)
+											app.close();
+
+									if (Keyboard::isKeyPressed(Keyboard::Y))
+										app.close();
+								}
 							}
 
 							Entity* e = new Entity();
@@ -264,7 +267,7 @@ int main()
 			if (e->getName() == "explosion")
 				if (e->animIsEnd()) e->setLife(0);
 
-		//сделать ограничение на создание астероидов, лул
+		//создание новых астероидов, когда это нужно
 		if (timeCreateAsteroids == 5) {
 			timeCreateAsteroids = 0;
 			if (countAsteroids < MAX_ASTEROIDS) {
@@ -273,7 +276,8 @@ int main()
 				entities.push_back(a);
 			}
 		}
-
+		//обновление анимаций всех объектов, которые остались
+		//удаление "умерших" объектов
 		for (auto i = entities.begin(); i != entities.end();)
 		{
 			Entity* e = *i;
@@ -289,13 +293,14 @@ int main()
 			else i++;
 		}
 
-										//drawed picture//
+//-------------------------------------//ОТРИСОВКА КАРТИНКИ//-----------------------------------------//
 		app.draw(background);
 		p->setAnim(sPlayer);
 		for (auto i : entities) i->draw(app);
 		app.draw(point);
 		app.draw(life);
 		app.draw(time);
+		app.draw(pause);
 		app.display();
 	}
 
