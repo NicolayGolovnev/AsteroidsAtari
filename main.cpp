@@ -1,4 +1,4 @@
-#include <SFML/System.hpp>
+п»ї#include <SFML/System.hpp>
 #include "Entity.h"
 #include <time.h>
 #include "Asteroid.h"
@@ -68,12 +68,12 @@ int main()
 	Font font;
 	font.loadFromFile("fonts/cour.ttf");
 
-	//Фон для паузы и для конца игры
+	//Р¤РѕРЅ РґР»СЏ РїР°СѓР·С‹ Рё РґР»СЏ РєРѕРЅС†Р° РёРіСЂС‹
 	Texture tbackgroundPause;
 	tbackgroundPause.loadFromFile("images/blackBackground.jpg");
 	Sprite backgroundPause(tbackgroundPause);
 
-	//Строки при проигрыше
+	//РЎС‚СЂРѕРєРё РїСЂРё РїСЂРѕРёРіСЂС‹С€Рµ
 	Text gameOver("GAME OVER", font, 64);
 	gameOver.setStyle(Text::Bold);
 	gameOver.setPosition(W / 2 - 150, 200);
@@ -82,7 +82,24 @@ int main()
 	pressForExit.setStyle(Text::Bold);
 	pressForExit.setPosition(W / 2 - 135, 350);
 
-	//Строки-информация для игры
+	//РЎС‚СЂРѕРєРё-PAUSE_MENU
+	Text FAQ1("How to play:", font, 32);
+	FAQ1.setStyle(Text::Bold | Text::Underlined);
+	FAQ1.setPosition(24, 100);
+	Text FAQ2("в†’ - Turn the spaceship to the right", font, 32);
+	FAQ2.setStyle(Text::Bold);
+	FAQ2.setPosition(32, 140);
+	Text FAQ3("в†ђ - Turn the spaceship to the left", font, 32);
+	FAQ3.setStyle(Text::Bold);
+	FAQ3.setPosition(32, 180);
+	Text FAQ4("в†‘ - Spaceship acceleration", font, 32);
+	FAQ4.setStyle(Text::Bold);
+	FAQ4.setPosition(32, 220);
+	Text FAQ5("Space - Fire", font, 32);
+	FAQ5.setStyle(Text::Bold);
+	FAQ5.setPosition(32, 260);
+
+	//РЎС‚СЂРѕРєРё-РёРЅС„РѕСЂРјР°С†РёСЏ РґР»СЏ РёРіСЂС‹
 	Text point("POINTS: 0", font, 32);
 	point.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	point.setPosition(10, 10);
@@ -112,17 +129,17 @@ int main()
 	int counterTime = 0, timeCreateAsteroids = 0, counterBullets = 0;
 	int gameTime = 0;
 
-	//ESC - PAUSE - по центру слабо видным цветом белым
+	//ESC - PAUSE - РїРѕ С†РµРЅС‚СЂСѓ СЃР»Р°Р±Рѕ РІРёРґРЅС‹Рј С†РІРµС‚РѕРј Р±РµР»С‹Рј
 	Text pause("ESC - PAUSE", font, 16);
 	pause.setPosition(W / 2 - 120, H - 18);
 //----------------------------------------//MAIN//------------------------------------------------//
 	while (app.isOpen())
 	{
 		
-		float timeС = clock.getElapsedTime().asMicroseconds();
+		float timeРЎ = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
-		timeС /= 800;
-		//std::cout << timeС << std::endl;
+		timeРЎ /= 800;
+		//std::cout << timeРЎ << std::endl;
 		
 		Event event;
 		while (app.pollEvent(event))
@@ -136,15 +153,17 @@ int main()
 					bool pause = true;
 					invulabe = true;
 					enableOnce = false;
-					clockPause.restart();
 
-					//затемнение всех спрайтов, которые когда либо существуют
+					//Р·Р°С‚РµРјРЅРµРЅРёРµ РІСЃРµС… СЃРїСЂР°Р№С‚РѕРІ, РєРѕС‚РѕСЂС‹Рµ РєРѕРіРґР° Р»РёР±Рѕ СЃСѓС‰РµСЃС‚РІСѓСЋС‚
 					backgroundPause.setColor(Color(255, 255, 255, 170));
 					app.draw(backgroundPause);
 					//FAQ and By Author
-
+					app.draw(FAQ1);
+					app.draw(FAQ2);
+					app.draw(FAQ3);
+					app.draw(FAQ4);
+					app.draw(FAQ5);
 					app.display();
-					int count = 0, countM = 0;
 					while (pause)
 						if (Keyboard::isKeyPressed(Keyboard::Q))
 							pause = false;
@@ -169,7 +188,7 @@ int main()
 			}
 		}
 
-		counterTime += timeС;
+		counterTime += timeРЎ;
 		if (counterTime > 1000) {
 			timeCreateAsteroids++;
 			gameTime++;
@@ -231,7 +250,7 @@ int main()
 
 //---------------------------------------------------//GAME OVER//-------------------------------------------//
 							if (lifes == 0) {
-								//вывод черного фона и таблицы
+								//РІС‹РІРѕРґ С‡РµСЂРЅРѕРіРѕ С„РѕРЅР° Рё С‚Р°Р±Р»РёС†С‹
 								backgroundPause.setColor(Color(255, 255, 255, 210));
 								life.setString("LIFE: 0");
 								app.draw(backgroundPause);
@@ -267,7 +286,7 @@ int main()
 			if (e->getName() == "explosion")
 				if (e->animIsEnd()) e->setLife(0);
 
-		//создание новых астероидов, когда это нужно
+		//СЃРѕР·РґР°РЅРёРµ РЅРѕРІС‹С… Р°СЃС‚РµСЂРѕРёРґРѕРІ, РєРѕРіРґР° СЌС‚Рѕ РЅСѓР¶РЅРѕ
 		if (timeCreateAsteroids == 5) {
 			timeCreateAsteroids = 0;
 			if (countAsteroids < MAX_ASTEROIDS) {
@@ -276,8 +295,8 @@ int main()
 				entities.push_back(a);
 			}
 		}
-		//обновление анимаций всех объектов, которые остались
-		//удаление "умерших" объектов
+		//РѕР±РЅРѕРІР»РµРЅРёРµ Р°РЅРёРјР°С†РёР№ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ, РєРѕС‚РѕСЂС‹Рµ РѕСЃС‚Р°Р»РёСЃСЊ
+		//СѓРґР°Р»РµРЅРёРµ "СѓРјРµСЂС€РёС…" РѕР±СЉРµРєС‚РѕРІ
 		for (auto i = entities.begin(); i != entities.end();)
 		{
 			Entity* e = *i;
@@ -293,7 +312,7 @@ int main()
 			else i++;
 		}
 
-//-------------------------------------//ОТРИСОВКА КАРТИНКИ//-----------------------------------------//
+//-------------------------------------//РћРўР РРЎРћР’РљРђ РљРђР РўРРќРљР//-----------------------------------------//
 		app.draw(background);
 		p->setAnim(sPlayer);
 		for (auto i : entities) i->draw(app);
