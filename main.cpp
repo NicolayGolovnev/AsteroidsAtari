@@ -7,7 +7,8 @@
 
 #include <iostream>
 
-#define MAX_ASTEROIDS 15
+#define MAX_ASTEROIDS 9
+#define MAX_BULLETS 15
 
 using namespace sf;
 
@@ -24,8 +25,8 @@ DONE	- INVULNERABILITY ON START BEFORE MOVING
 //const int H = 800;
 
 int lifes = 3;
-bool invulabe = true, enableOnce = true;
-
+bool invulabe = true;
+/*
 void pauseGame(RenderWindow& window) {
 	//для паузы
 	Texture tbackgroundPause;
@@ -52,7 +53,7 @@ void pauseGame(RenderWindow& window) {
 		window.display();
 	}
 }
-
+*/
 bool isCollide(Entity* a, Entity* b)
 {
 	return (b->getX() - a->getX()) * (b->getX() - a->getX()) +
@@ -64,6 +65,7 @@ int main()
 {
 	srand(time(0));
 	Clock clock;
+	bool enableOnce = true;
 
 	RenderWindow app(VideoMode(W, H), "Asteroids!");
 	app.setFramerateLimit(45);
@@ -113,17 +115,19 @@ int main()
 
 	std::list<Entity*> entities;
 									//CREATE A ASTEROID WITH THE PLAYER
+	int countAsteroids = 0;
 	for (int i = 0; i < MAX_ASTEROIDS; i++)
 	{
 		Asteroid* a = new Asteroid();
 		a->settings(sRock, rand() % W, rand() % H, rand() % 360, 25);
 		entities.push_back(a);
+		countAsteroids++;
 	}
 
 	Player* p = new Player();
 	p->settings(sPlayer, W / 2, H / 2, 270, 20);
 	entities.push_back(p);
-	int counter = 0;
+	int counterTime = 0, timeCreateAsteroids = 0, counterBullets = 0;
 	int gameTime = 0;
 //----------------------------------------//MAIN//------------------------------------------------//
 	while (app.isOpen())
@@ -131,7 +135,7 @@ int main()
 		float timeС = clock.getElapsedTime().asMicroseconds();
 		clock.restart();
 		timeС /= 800;
-		std::cout << timeС << std::endl;
+		//std::cout << timeС << std::endl;
 
 		Event event;
 		while (app.pollEvent(event))
@@ -141,56 +145,55 @@ int main()
 //--------------------------------------------//CREATE BULLET//-----------------------------------//
 			if (event.type == Event::KeyPressed) {
 				if (event.key.code == Keyboard::Space){
-					Bullet* b = new Bullet();
-					b->settings(sBullet, p->getX(), p->getY(), p->getAngle(), 10);
-					entities.push_back(b);
+					if (counterBullets < MAX_BULLETS) {
+						Bullet* b = new Bullet();
+						b->settings(sBullet, p->getX(), p->getY(), p->getAngle(), 10);
+						entities.push_back(b);
+						counterBullets++;
+					}
 				}
 
 //---------------------------------------------//PAUSE//------------------------------------------//
-				if (event.key.code == Keyboard::Escape) {
-					Texture tbackgroundPause;
-					tbackgroundPause.loadFromFile("images/blackBackground.jpg");
-					Sprite backgroundPause(tbackgroundPause);
-
-					//TAKE A PAUSE
-					bool pause = true;
-					invulabe = true;
-
-					//затемнение всех спрайтов, которые когда либо существуют
-					backgroundPause.setColor(Color(255, 255, 255, 170));
-					//FAQ and By Author
-																//PAUSE//
-					while (pause) {
-						//создание стрингов и отобразить на экран
-						if (Keyboard::isKeyPressed(Keyboard::Q))
-							if (enableOnce) {
-								pause = false;
-								enableOnce = false;
-							}
-
-						app.draw(backgroundPause);
-						app.display();
-					}
-				}
+				
 			}
 		}
 
-		counter += timeС;
-		if (counter > 1000) {
+		counterTime += timeС;
+		if (counterTime > 1000) {
+			timeCreateAsteroids++;
 			gameTime++;
 			time.setString("TIME: " + std::to_string(gameTime));
-			
-			counter = 0;
+			enableOnce = true;
+			counterTime = 0;
 		}
-
+//---------------------------------------------//INVULABE, KEYS//----------------------------------------//
 		if (invulabe) {
 			if (Keyboard::isKeyPressed(Keyboard::Right) || Keyboard::isKeyPressed(Keyboard::Left) ||
 				Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Space))
 				invulabe = false;
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::Q)) {
-			//pauseGame(app);
+		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+			if (enableOnce) {
+				Texture tbackgroundPause;
+				tbackgroundPause.loadFromFile("images/blackBackground.jpg");
+				Sprite backgroundPause(tbackgroundPause);
+
+				//TAKE A PAUSE
+				bool pause = true;
+				invulabe = true;
+
+				//затемнение всех спрайтов, которые когда либо существуют
+				backgroundPause.setColor(Color(255, 255, 255, 170));
+				//FAQ and By Author
+
+				app.draw(backgroundPause);
+				app.display();
+				while (pause)
+					if (Keyboard::isKeyPressed(Keyboard::Escape))
+						pause = false;
+				enableOnce = false;
+			}
 		}
 
 		if (Keyboard::isKeyPressed(Keyboard::Right)) p->setAngle(p->getAngle() + 3);
@@ -201,12 +204,13 @@ int main()
 		for (auto a : entities)
 			for (auto b : entities)
 			{
-												//KILLED ASTEROID//
+//-----------------------------------------//KILLED ASTEROID//-----------------------------------------------//
 				if (a->getName() == "asteroid" && b->getName() == "bullet")
 					if (isCollide(a, b))
 					{
 						a->setLife(false);
 						b->setLife(false);
+						countAsteroids--;
 
 						Entity* e = new Entity();
 						e->settings(sExplosion, a->getX(), a->getY());
@@ -229,45 +233,45 @@ int main()
 
 					}
 
-											//DEAD SHIP//
+//--------------------------------------------------//DEAD SHIP//------------------------------------------//
 				if (a->getName() == "player" && b->getName() == "asteroid")
 					if (!invulabe)
-						if (isCollide(a, b))
-					{
-						b->setLife(false);
-						//playerLife--
-						lifes--;
-						life.setString("LIFE: " + std::to_string(lifes));
-						invulabe = true;
+						if (isCollide(a, b)) {
+							b->setLife(false);
+							lifes--;
+							life.setString("LIFE: " + std::to_string(lifes));
+							invulabe = true;
 
-												//GAME OVER//
-						if (lifes == 0) {
-							//вывод черного фона и таблицы
+													//GAME OVER//
+							if (lifes == 0) {
+								//вывод черного фона и таблицы
 
-							//вывести таблицу рекордов, сделать запись
-							app.close();
-						}
+								//вывести таблицу рекордов, сделать запись
+								app.close();
+							}
 
-						Entity* e = new Entity();
-						e->settings(sExplosion_ship, a->getX(), a->getY());
-						e->setName("explosion");
-						entities.push_back(e);
+							Entity* e = new Entity();
+							e->settings(sExplosion_ship, a->getX(), a->getY());
+							e->setName("explosion");
+							entities.push_back(e);
 
-						p->settings(sPlayer, W / 2, H / 2, 270, 20);
-						p->setDx(0); p->setDy(0);
+							p->settings(sPlayer, W / 2, H / 2, 270, 20);
+							p->setDx(0); p->setDy(0);
 					}
-			}
+						}
 
 		for (auto e : entities)
 			if (e->getName() == "explosion")
 				if (e->animIsEnd()) e->setLife(0);
 
 		//сделать ограничение на создание астероидов, лул
-		if (rand() % 150 == 0)
-		{
-			Asteroid* a = new Asteroid();
-			a->settings(sRock, 0, rand() % H, rand() % 360, 25);
-			entities.push_back(a);
+		if (timeCreateAsteroids == 5) {
+			timeCreateAsteroids = 0;
+			if (countAsteroids < MAX_ASTEROIDS) {
+				Asteroid* a = new Asteroid();
+				a->settings(sRock, 0, rand() % H, rand() % 360, 25);
+				entities.push_back(a);
+			}
 		}
 
 		for (auto i = entities.begin(); i != entities.end();)
@@ -276,7 +280,12 @@ int main()
 
 			e->update();
 
-			if (e->getLife() == false) { i = entities.erase(i); delete e; }
+			if (e->getLife() == false) {
+				if (e->getName() == "bullet")
+					counterBullets--;
+				i = entities.erase(i);
+				delete e; 
+			}
 			else i++;
 		}
 
