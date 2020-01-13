@@ -1,13 +1,14 @@
 #include "Animation.h"
 
 Animation::Animation() {}
-Animation::Animation(Texture& t, int x, int y, int w, int h, int count, float speed)
+Animation::Animation(Texture& t, int x, int y, int w, int h, int countOne, int countTwo, float speed)
 {
 	this->Frame = 0;
 	this->Speed = speed;
 
-	for (int i = 0; i < count; i++)
-		frames.push_back(IntRect(x + i * w, y, w, h));
+	for (int j = 0; j < countTwo; j++)
+		for (int i = 0; i < countOne; i++)
+			frames.push_back(IntRect(x + i * w, y + j * h, w, h));
 
 	sprite.setTexture(t);
 	sprite.setOrigin(w / 2, h / 2);

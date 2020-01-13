@@ -9,7 +9,7 @@ public:
 	Sprite sprite;
 	std::vector<IntRect> frames;
 	Animation();
-	Animation(Texture& t, int x, int y, int w, int h, int count, float speed);
+	Animation(Texture& t, int x, int y, int w, int h, int countOne, int countTwo, float speed);
 	void update();
 	bool isEnd();
 };

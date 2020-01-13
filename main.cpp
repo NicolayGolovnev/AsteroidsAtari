@@ -43,34 +43,37 @@ int main()
 	RenderWindow app(VideoMode(W, H), "Asteroids!");
 	app.setFramerateLimit(45);
 
-	Texture tSpaceShip, tBackground, tExplosion, tAsteroid, tFireBulletBlue, tFireBulletRed, tLittleAsteroid, tExplosion2;
-	tSpaceShip.loadFromFile("images/White_Ship_Space.png");
-	tBackground.loadFromFile("images/back1.jpg");
-	tExplosion.loadFromFile("images/explosions/type_C.png");
+	Texture tSpaceShip, tBackground, tAsteroid, tFireBulletBlue, tFireBulletRed, tLittleAsteroid;
+	tSpaceShip.loadFromFile("images/spaceship.png");
+	tBackground.loadFromFile("images/background.jpg");
 	tAsteroid.loadFromFile("images/rock.png");
 	tFireBulletBlue.loadFromFile("images/fire_blue.png");
 	tFireBulletRed.loadFromFile("images/fire_red.png");
 	tLittleAsteroid.loadFromFile("images/rock_small.png");
-	tExplosion2.loadFromFile("images/explosions/type_B.png");
 
 	tSpaceShip.setSmooth(true);
 	tBackground.setSmooth(true);
-
 	Sprite background(tBackground);
 
-	Animation sExplosion(tExplosion, 0, 0, 256, 256, 48, 0.5);
-	Animation sRock(tAsteroid, 0, 0, 64, 64, 16, 0.2);
-	Animation sRock_small(tLittleAsteroid, 0, 0, 64, 64, 16, 0.2);
-	Animation sBullet(tFireBulletBlue, 0, 0, 32, 64, 16, 0.8);
-	Animation sPlayer(tSpaceShip, 0, 0, 64, 64, 1, 0);
-	Animation sExplosion_ship(tExplosion2, 0, 0, 192, 192, 64, 0.5);
+	Animation sRock(tAsteroid, 0, 0, 64, 64, 16, 1, 0.2);
+	Animation sRock_small(tLittleAsteroid, 0, 0, 64, 64, 16, 1, 0.2);
+	Animation sBullet(tFireBulletBlue, 0, 0, 32, 64, 16, 1, 0.8);
+	Animation sPlayer(tSpaceShip, 0, 0, 64, 64, 1, 1, 0);
+
+	Texture tExplosionRock, tExplosionRockSmall, tExplosionShip;
+	tExplosionRock.loadFromFile("images/explosions/explosionRock.png");
+	tExplosionRockSmall.loadFromFile("images/explosions/explosionRockSmall.png");
+	tExplosionShip.loadFromFile("images/explosions/type_C.png");
+	Animation sExplosionRock(tExplosionRock, 0, 0, 128, 128, 8, 6, 0.4);
+	Animation sExplosionRockSmall(tExplosionRockSmall, 0, 0, 64, 64, 8, 6, 0.4);
+	Animation sExplosionShip(tExplosionShip, 0, 0, 256, 256, 48, 1, 0.4);
 
 	Font font;
 	font.loadFromFile("fonts/cour.ttf");
 
 	//Фон для паузы и для конца игры
 	Texture tbackgroundPause;
-	tbackgroundPause.loadFromFile("images/blackBackground.jpg");
+	tbackgroundPause.loadFromFile("images/pauseBackground.jpg");
 	Sprite backgroundPause(tbackgroundPause);
 
 	//Строки при проигрыше
@@ -233,7 +236,10 @@ int main()
 						countAsteroids--;
 
 						Entity* e = new Entity();
-						e->settings(sExplosion, a->getX(), a->getY());
+						if (a->getR() == 15)
+							e->settings(sExplosionRockSmall, a->getX(), a->getY());
+						else
+							e->settings(sExplosionRock, a->getX(), a->getY());
 						e->setName("explosion");
 						entities.push_back(e);
 
@@ -286,7 +292,7 @@ int main()
 							}
 
 							Entity* e = new Entity();
-							e->settings(sExplosion_ship, a->getX(), a->getY());
+							e->settings(sExplosionShip, a->getX(), a->getY());
 							e->setName("explosion");
 							entities.push_back(e);
 
