@@ -12,15 +12,6 @@
 
 using namespace sf;
 
-/*
-ADDED-LIST:
-DONE	- LIFES
-MB	- PICTURE LIFE AND Outing that
-	- RECORDs TABLE
-DONE	- INVULNERABILITY ON START BEFORE MOVING
-	- PLAY TIME
-*/
-
 //const int W = 1200;
 //const int H = 800;
 
@@ -60,10 +51,9 @@ int main()
 	Animation sBullet(tFireBulletBlue, 0, 0, 32, 64, 16, 1, 0.8);
 	Animation sPlayer(tSpaceShip, 0, 0, 64, 64, 1, 1, 0);
 
-	Texture tExplosionRock, tExplosionRockSmall, tExplosionShip;
+	Texture tExplosionRock, tExplosionRockSmall;
 	tExplosionRock.loadFromFile("images/explosions/explosionRock.png");
 	tExplosionRockSmall.loadFromFile("images/explosions/explosionRockSmall.png");
-	tExplosionShip.loadFromFile("images/explosions/explosionShip.png");
 	Animation sExplosionRock(tExplosionRock, 0, 0, 128, 128, 8, 6, 0.4);
 	Animation sExplosionRockSmall(tExplosionRockSmall, 0, 0, 64, 64, 8, 6, 0.4);
 	Animation sExplosionShip(tExplosionRock, 0, 0, 128, 128, 8, 6, 0.6);
